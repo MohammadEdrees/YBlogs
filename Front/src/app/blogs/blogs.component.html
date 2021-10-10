@@ -1,0 +1,109 @@
+ 
+<nav class="navbar navbar-expand-lg navbar-light bg-black">
+  
+   
+
+    <div class="collapse navbar-collapse " id="navbarNav">
+
+      <ul class="navbar-nav">
+        <li class="nav-item  ">
+            <span class="navbar-brand text-light "  style="margin-left: 10px;"  >Blogs</span>
+        </li>
+    
+
+        <li class="nav-item active  col-4 offset-1">
+          <button class="btn btn-outline-light  " (click)="goCreateblog()" > Create Article </button>
+        </li>
+      
+        <li class="nav-item col-4 ">
+            <button class="btn btn-outline-info " *ngIf="role=='admin'" (click)="createCategory()" > Manage Categories</button>
+        </li>
+
+        <li class="nav-item ">
+            <span class="navbar-brand text-light "  >Email: <span class="text-warning">{{email}}</span></span>
+        </li>
+
+        <li class="nav-item  ">
+            <span class="navbar-brand text-light " style="margin-left: 10px;" >Role: <span class="text-warning">{{role}}</span></span>
+        </li>
+        <li class="nav-item col-4 ">
+          <button class="btn btn-outline-danger " (click)="logOut()" > Log Out</button>
+      </li>
+
+      </ul>
+
+    </div>
+  </nav>
+
+  <h6 for="Category" class="text-danger text-lg-center"><b>Search</b></h6>
+  <div>
+    <form [formGroup]="FilterForm" class="container " > 
+    <p class=' container  text-center  '>
+      
+      <select  id="Category" class="col-4 form-control" formControlName="Category" (ngModelChange)="filterByCategory()"  >
+        <option *ngFor="let categ of categories" value='{{categ.categoryTitle}}' >{{categ.categoryTitle}}</option>
+
+      </select>
+
+      <button class="btn btn-outline-danger col-3   mt-1" (click)="reset()">
+        Reset Filters 
+      </button>
+    </p>
+     </form>
+  </div>
+ 
+
+  <div class="container " *ngIf="visibleAll"  >
+    <table class="table">
+      <thead>
+        <tr class="text-center">
+          <th>Articles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let blog of articles "  >
+          <td class="text text-truncate">
+            <div class="alert alert-success" >
+              <h4 class="alert-heading text text-truncate">{{blog.articleTitle}}</h4>
+              <p class="text text-truncate">{{blog.articleBody}}</p>
+              
+              <hr>
+              
+                <button class="btn btn-warning offset-1" (click)="editBlog(blog.articleId)">Edit</button>
+                <button class="btn btn-info offset-8" disabled>Comment</button>
+              
+            </div>
+          
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="container " *ngIf="visiblefiltered">
+    <table class="table">
+      <thead>
+        <tr class="text-center">
+          <th>Articles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let blogselected of filteredarticles"> 
+          <td class="text text-truncate">
+            <div class="alert alert-success" >
+              <h4 class="alert-heading text text-truncate">{{blogselected.articleTitle}}</h4>
+              <p class="text text-truncate">{{blogselected.articleBody}}</p>
+              
+              <hr>
+              
+                <button class="btn btn-warning offset-1">Edit</button>
+                <button class="btn btn-info offset-8">Comment</button>
+              
+            </div>
+          
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

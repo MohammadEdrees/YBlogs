@@ -1,0 +1,42 @@
+<div class="container text-center " >
+  <h1> Registeration Page </h1>
+</div>
+<div class="container mt-5 ">
+    <form [formGroup]="registerForm" class="col-4 offset-4" >
+
+      <span class="text-danger" *ngIf="errflag"> * data is required </span>
+      <span class="text-success" *ngIf="successflag"> registration completed </span>
+        <p>
+          <label for="UserName">UserName</label>
+          <input  id="UserName" class="form-control" formControlName="UserName" required  />
+        </p>
+
+        <p>
+          <label for="Email">Email</label>
+          <input  id="Email" class="form-control" formControlName="Email" >
+        </p>
+
+        <p>
+          <label for="Password">Password</label>
+          <input type="password" id="Password" class="form-control" formControlName="Password" >
+        </p>
+
+        <p>
+          <label for="Role">Role</label>
+          <select  id="Role" class="col-12 form-control" formControlName="Role" >
+            <option>Visitor</option>
+            <option>Moderator</option>
+            <option>Admin</option>
+          </select>
+        </p>
+
+        <p>
+            <button class="btn btn-secondary col-12" (click)="onSubmit()">Submit</button>
+        </p>
+        <p>
+          <button class="btn btn-info col-12"  (click)="goTologin()">Login Page</button>
+        </p>
+  </form>
+  </div>
+  
+

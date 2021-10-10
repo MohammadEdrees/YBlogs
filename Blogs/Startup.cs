@@ -18,6 +18,8 @@ namespace Blogs
 {
     public class Startup
     {
+        private readonly string enableCors = "cors";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,6 +37,19 @@ namespace Blogs
             services.AddIdentity<ApplicationUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DBContext>();
+
+            services.AddCors(c =>
+            {
+                //Allow All 
+                c.AddPolicy(enableCors, c =>
+                {
+                    c.AllowAnyOrigin();
+                    c.AllowAnyMethod();
+                    c.AllowAnyHeader();
+
+                });
+            });
+
             services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,7 +77,8 @@ namespace Blogs
             });
 
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,7 +94,10 @@ namespace Blogs
             }
             app.UseStaticFiles();
 
+
             app.UseRouting();
+            app.UseCors(enableCors);
+
             app.UseAuthentication();
             app.UseAuthorization();
 

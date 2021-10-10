@@ -1,0 +1,38 @@
+<div class="container text-center " >
+    <h1> New Article </h1>
+  </div>
+  <div class="container mt-5 ">
+      <form [formGroup]="CreateForm" class="col-4 offset-4" >
+  
+        <span class="text-danger" *ngIf="errflag"> * data is required </span>
+      
+        <p>
+          <label for="Category">Category</label>
+          <select  id="Category" class="col-12 form-control" formControlName="Category" >
+            <option *ngFor="let categ of allCategories" value='{{categ.categoryId}}' >{{categ.categoryTitle}}</option>
+
+          </select>
+        </p>
+
+    
+          <p>
+            <label for="articleTitle">articleTitle</label>
+            <input  id="articleTitle" class="form-control" formControlName="articleTitle"   />
+          </p>
+  
+          <p>
+            <label for="articleBody">articleBody</label>
+            <input  id="articleBody" class="form-control" formControlName="articleBody" >
+          </p>
+  
+          <p>
+              <button class="btn btn-secondary col-12" (click)="CreateBlog()">Create</button>
+          </p>
+          <p>
+            <button class="btn btn-info col-12"  (click)="goToHome()">Home</button>
+          </p>
+    </form>
+    </div>
+    
+  
+  

@@ -1,0 +1,30 @@
+<div class="container text-center " >
+    <h1> Login Page </h1>
+  </div>
+  <div class="container mt-5 ">
+      <form [formGroup]="loginForm" class="col-4 offset-4" >
+  
+        <span class="text-danger" *ngIf="errflag"> * data is required </span>
+        <span class="text-danger" *ngIf="loginfailedflag"> *Login Failed </span>
+  
+          <p>
+            <label for="Email">Email</label>
+            <input  id="Email" class="form-control" formControlName="Email" >
+          </p>
+  
+          <p>
+            <label for="Password">Password</label>
+            <input type="password" id="Password" class="form-control" formControlName="Password" >
+          </p>
+  
+          <p>
+              <button class="btn btn-primary col-12" (click)="assignUserdata()">Login</button>
+          </p>
+          <p>
+            <button class="btn btn-warning col-12" (click)="gotoRegister()" >Registration Page</button>
+          </p>
+    </form>
+    </div>
+    
+  
+  

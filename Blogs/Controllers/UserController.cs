@@ -18,19 +18,21 @@ namespace Blogs.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> Register( ApplicationUser user ,  string role)
+        public async Task <IActionResult> Register( [FromBody]ApplicationUser user ,  string role)
         {
             if (user == null)
             {
-                return BadRequest(" user equals null ");
+                return BadRequest(" Something Went Wrong Pleasse Try Again");
             }
             if (string.IsNullOrEmpty(role))
             {
-                return BadRequest(" role Is Null Or Empty ");
+                return BadRequest(" Something Went Wrong Pleasse Try Again ");
             }
              
                 bool v = await _services.RegisterUser(user, role);
-            return Ok($"Saved Successfully If true ==> {v}");
+            if (v)
+                return Ok(" User Created Successfully ");
+            return BadRequest("Something Went Wrong Pleasse Try Again");
             
             
         }
@@ -45,6 +47,14 @@ namespace Blogs.Controllers
             ApplicationUser LoggedInUser = await _services.Login(mail, password);
             return Ok(LoggedInUser);
         }
+        [HttpGet]
+        public async Task<IActionResult>GetRoleByMail(string mail)
+        {
+            if (string.IsNullOrEmpty(mail))
+                return BadRequest("your mail maybe null or empty ");
+            return Ok(await _services.GetRoleByEmail(mail));
+        }
+
 
     }
 }

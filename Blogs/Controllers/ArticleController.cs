@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Blogs.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ArticleController : Controller
     {
         private IServices _services;
@@ -17,8 +17,8 @@ namespace Blogs.Controllers
             _services = services;
         }
 
-        [HttpPost, Authorize(Roles = "Admin")]
-        public IActionResult Create(Article art)
+        [HttpPost]
+        public IActionResult Create([FromBody]Article art)
         {
             if (art == null)
             {
@@ -28,28 +28,46 @@ namespace Blogs.Controllers
             return Ok(v);
         }
 
-        [HttpGet, Authorize(Roles ="Admin,Moderator,Visitor" )]
+
         public IActionResult GetAllArticles()
         {
-            IList<Article> arts =  _services.GetAllArticles();
-            if (arts.Count <= 0)
-                return BadRequest("No Articles Found");
-            return Ok(arts);
+            IList<Article> arts = new List<Article>();
+            if (arts != null)
+            {
+                arts = _services.GetAllArticles();
+                return Ok(arts);
+            }
+            return NotFound("");
+
         }
 
-        [HttpPut,Authorize("Admin,Moderator")]
-        public IActionResult UpdateArticle(int oldId,Article NewArticle)
+       [HttpPut]
+        public IActionResult UpdateArticle(int oldId,[FromBody]Article NewArticle)
         {
             Article article = _services.UpdateArticle(oldId, NewArticle);
             return Ok(article);
         }
 
-        [HttpGet, Authorize(Roles = "Admin,Moderator,Visitor")]
+
         public IActionResult ArticlesByCategory(string category)
         {
             if (string.IsNullOrEmpty(category))
                 return BadRequest();
             return Ok(_services.FilterArticlesByCategory(category));
+        }
+        [HttpGet]
+        public IActionResult GetArticleById(int id)
+        {
+      
+     
+            Article article = _services.GetArticleById(id);
+            if (article != null)
+            {
+                return Ok(article);
+            }
+            return BadRequest();
+
+
         }
 
 

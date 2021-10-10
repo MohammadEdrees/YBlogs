@@ -1,0 +1,22 @@
+<div class="container text-center " >
+    <h1> New Article </h1>
+  </div>
+  <div class="container mt-5 ">
+      <form [formGroup]="CreateForm" class="col-4 offset-4" >
+
+          <p>
+            <label for="Category">Category</label>
+            <input  id="Category" class="form-control" formControlName="Category" >
+          </p>
+  
+          <p>
+              <button class="btn btn-secondary col-12" (click)="CreateCategory()">Create</button>
+          </p>
+          <p>
+            <button class="btn btn-info col-12"  (click)="goToHome()">Home</button>
+          </p>
+    </form>
+    </div>
+    
+  
+  

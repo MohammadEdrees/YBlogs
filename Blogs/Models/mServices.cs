@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -148,6 +149,11 @@ namespace Blogs.Models
                 
                 if (userCreation.Succeeded)
                 {
+                    IdentityRole identityRole = _db.Roles.FirstOrDefault(obj=>obj.Name==role);
+                    if (identityRole == null)
+                    {
+                        await AddRole(role);
+                    }
                     IdentityResult roleAdding = await _userManager.AddToRoleAsync(nUser, role);
                     if (roleAdding.Succeeded)
                     {
@@ -178,6 +184,33 @@ namespace Blogs.Models
         {
             return _db.Articles.Where(o => o.Category.CategoryTitle == category).ToList();
                 
+        }
+
+        public async Task<string> GetRoleByEmail(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            var roles= await _userManager.GetRolesAsync(user);
+            return roles[0];
+        }
+
+        public Category CreateCategory(Category category)
+        {
+           _db.Categories.Add(category);
+           _db.SaveChanges();
+            return category;
+
+
+        }
+
+        public Category GetCategoryByName(string name)=>_db.Categories.FirstOrDefault(obj => obj.CategoryTitle == name);
+
+        public IList<Article> GetArticlesByCategoryName(string catName)=> _db.Articles.Where(obj => obj.Category.CategoryTitle == catName).ToList();
+
+        public IList<Category> GetCategories()=> _db.Categories.Include(obj=>obj.Articles).ToList();
+
+        public Article GetArticleById(int Id)
+        {
+            return _db.Articles.FirstOrDefault(col => col.ArticleId == Id);
         }
     }
 }
